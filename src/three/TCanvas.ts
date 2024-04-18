@@ -1,4 +1,4 @@
-import { Color, type ColorRepresentation } from "three";
+import { Color } from "three";
 import { GL, OC } from "./core";
 import { loadAssets } from "./utils";
 
@@ -8,15 +8,22 @@ class TCanvas {
   gl: GL;
   private controls?: OC | null;
   private assets: AssetsType = {};
+  private container: HTMLElement;
 
   constructor(container: HTMLElement, controllable?: boolean) {
+    this.container = container;
+
     const gl = new GL(container);
     this.gl = gl;
 
     if (controllable) this.controls = new OC(gl);
   }
 
-  async init(bgColor: ColorRepresentation) {
+  async init() {
+    const bgColor = window
+      .getComputedStyle(this.container)
+      .getPropertyValue("background-color");
+
     await loadAssets(this.assets);
 
     if (bgColor !== "rgba(0, 0, 0, 0)") {

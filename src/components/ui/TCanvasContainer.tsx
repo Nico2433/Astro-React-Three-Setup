@@ -25,12 +25,8 @@ const TCanvasContainer: React.FC<Readonly<Props>> = ({
     const loadCanvas = async () => {
       if (!ref.current) return;
 
-      const bgColor = window
-        .getComputedStyle(ref.current)
-        .getPropertyValue("background-color");
-
       const newCanvas = new TCanvas(ref.current, controllable);
-      await newCanvas.init(bgColor);
+      await newCanvas.init();
 
       setCanvas(newCanvas);
     };
