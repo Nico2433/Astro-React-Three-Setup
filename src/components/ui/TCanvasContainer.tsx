@@ -1,6 +1,5 @@
-import type { GL } from "@/three";
 import { TCanvas } from "@/three";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Props
   extends Omit<
@@ -10,31 +9,44 @@ interface Props
     >,
     "ref"
   > {
-  getInstance: (gl: GL) => any;
+  getProps: (canvas: TCanvas | null) => any;
   controllable?: boolean;
 }
 
 const TCanvasContainer: React.FC<Readonly<Props>> = ({
-  getInstance,
+  getProps,
   controllable,
   ...rest
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const canvas = useRef<TCanvas | null>(null);
+  const [canvas, setCanvas] = useState<TCanvas | null>(null);
 
   useEffect(() => {
-    if (!canvas.current)
-      canvas.current = new TCanvas(ref.current, controllable);
+    const loadCanvas = async () => {
+      if (!ref.current) return;
 
-    getInstance(canvas.current.gl);
-    const onBeforeUnload = () => canvas.current?.dispose();
+      const bgColor = window
+        .getComputedStyle(ref.current)
+        .getPropertyValue("background-color");
+
+      const newCanvas = new TCanvas(ref.current, controllable);
+      await newCanvas.init(bgColor);
+
+      setCanvas(newCanvas);
+    };
+
+    if (!canvas) loadCanvas();
+
+    getProps(canvas);
+
+    const onBeforeUnload = () => canvas?.dispose();
 
     window.addEventListener("beforeunload", onBeforeUnload);
 
     return () => {
       window.removeEventListener("beforeunload", onBeforeUnload);
     };
-  }, []);
+  }, [canvas]);
 
   return <div ref={ref} {...rest}></div>;
 };

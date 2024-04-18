@@ -9,13 +9,15 @@ import {
 import { GLTFLoader, type GLTF } from "three/addons/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
+export interface Asset {
+  data?: THREE.Texture | THREE.VideoTexture | GLTF;
+  path: string;
+  encoding?: boolean;
+  flipY?: boolean;
+}
+
 export type Assets = {
-  [key in string]: {
-    data?: THREE.Texture | THREE.VideoTexture | GLTF;
-    path: string;
-    encoding?: boolean;
-    flipY?: boolean;
-  };
+  [key in string]: Asset;
 };
 
 export const loadAssets = async (assets: Assets) => {
