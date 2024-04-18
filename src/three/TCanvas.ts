@@ -10,7 +10,8 @@ class TCanvas {
   private assets: AssetsType = {};
   private container: HTMLElement;
 
-  constructor(container: HTMLElement, controllable?: boolean) {
+  constructor(container: HTMLElement | null, controllable?: boolean) {
+    if (!container) throw new Error("Canvas container cannot be null");
     this.container = container;
 
     const gl = new GL(container);
@@ -20,11 +21,11 @@ class TCanvas {
   }
 
   async init() {
+    await loadAssets(this.assets);
+
     const bgColor = window
       .getComputedStyle(this.container)
       .getPropertyValue("background-color");
-
-    await loadAssets(this.assets);
 
     if (bgColor !== "rgba(0, 0, 0, 0)") {
       const color = new Color(bgColor);

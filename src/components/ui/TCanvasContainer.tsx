@@ -23,8 +23,6 @@ const TCanvasContainer: React.FC<Readonly<Props>> = ({
 
   useEffect(() => {
     const loadCanvas = async () => {
-      if (!ref.current) return;
-
       const newCanvas = new TCanvas(ref.current, controllable);
       await newCanvas.init();
 
