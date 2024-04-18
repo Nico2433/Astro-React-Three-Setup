@@ -1,0 +1,58 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "extraFileExtensions": [".astro"]
+  },
+  "overrides": [
+    // Configuration for TypeScript files
+    {
+      "parser": "@typescript-eslint/parser",
+      "files": ["*.ts", "*.tsx"],
+      "plugins": ["@typescript-eslint", "react", "tailwindcss"],
+      "extends": ["plugin:tailwindcss/recommended"],
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
+      "rules": {
+        "react/require-default-props": "off", // Allow non-defined react props as undefined
+        "@typescript-eslint/consistent-type-imports": "error", // Ensure `import type` is used when it's necessary
+        "tailwindcss/classnames-order": [
+          "warn",
+          {
+            "officialSorting": true
+          }
+        ], // Follow the same ordering as the official plugin `prettier-plugin-tailwindcss`
+        "@typescript-eslint/no-unused-vars": "warn"
+      }
+    },
+    // Configuration for Astro
+    {
+      "files": ["*.astro"],
+      "plugins": ["@typescript-eslint", "react", "tailwindcss"],
+      "extends": ["plugin:tailwindcss/recommended"],
+      "parser": "astro-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser"
+      },
+      "rules": {
+        "react/jsx-filename-extension": [1, { "extensions": [".astro"] }], // Accept jsx in astro files
+        "react/require-default-props": "off", // Allow non-defined react props as undefined
+        "@typescript-eslint/consistent-type-imports": "error", // Ensure `import type` is used when it's necessary
+        "tailwindcss/classnames-order": [
+          "warn",
+          {
+            "officialSorting": true
+          }
+        ], // Follow the same ordering as the official plugin `prettier-plugin-tailwindcss`
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          { "varsIgnorePattern": "Props", "argsIgnorePattern": "_" }
+        ] // Ignores Props interface on astro files
+      },
+      "globals": {
+        "Astro": "readonly"
+      }
+    }
+  ]
+}
