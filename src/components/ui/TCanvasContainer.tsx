@@ -20,14 +20,14 @@ const TCanvasContainer: React.FC<Readonly<Props>> = ({
   ...rest
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const canvas = useRef<TCanvas | null>(null);
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!canvas.current)
+      canvas.current = new TCanvas(ref.current, controllable);
 
-    const canvas = new TCanvas(ref.current, controllable);
-    getInstance(canvas.gl);
-
-    const onBeforeUnload = () => canvas.dispose();
+    getInstance(canvas.current.gl);
+    const onBeforeUnload = () => canvas.current?.dispose();
 
     window.addEventListener("beforeunload", onBeforeUnload);
 

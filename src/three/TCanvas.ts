@@ -8,7 +8,9 @@ class TCanvas {
   private container: HTMLElement;
   private assets: Assets = {};
 
-  constructor(container: HTMLElement, controllable?: boolean) {
+  constructor(container: HTMLElement | null, controllable?: boolean) {
+    if (!container) throw new Error("Canvas container cannot be null");
+
     const { offsetWidth: width, offsetHeight: height } = container;
 
     this.container = container;
