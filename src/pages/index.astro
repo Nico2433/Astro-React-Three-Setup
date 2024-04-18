@@ -1,13 +1,10 @@
 ---
-import CanvasWrapper from "@/components/CanvasWrapper";
+import CanvasWrapper from "@/components/ui/CanvasWrapper";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Welcome to Astro.">
   <main>
-    <CanvasWrapper
-      client:only="react"
-      className="fixed size-1/2 bg-neutral-500"
-    />
+    <CanvasWrapper client:only="react" className="h-96 w-full bg-neutral-200" />
   </main>
 </Layout>

@@ -1,21 +1,20 @@
 import type * as THREE from "three";
-import { Clock, PerspectiveCamera, Scene, WebGLRenderer } from "three";
+import { PerspectiveCamera, Scene, WebGLRenderer } from "three";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
 class WebGL {
   renderer: THREE.WebGLRenderer;
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
-  time = { delta: 0, elapsed: 0 };
 
-  private clock = new Clock();
-  private resizeCallback?: () => void;
   private stats?: Stats;
-  private size: { width: number; height: number; aspect: number };
+  private container: HTMLElement;
 
-  constructor(width: number, height: number) {
+  constructor(container: HTMLElement) {
+    const { offsetWidth: width, offsetHeight: height } = container;
+    this.container = container;
+
     const aspect = width / height;
-    this.size = { width, height, aspect };
 
     this.renderer = new WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -23,31 +22,28 @@ class WebGL {
     this.renderer.shadowMap.enabled = true;
 
     this.scene = new Scene();
-    this.camera = new PerspectiveCamera(40, aspect, 0.01, 100);
+    this.camera = new PerspectiveCamera(75, aspect, 0.01, 100);
 
     window.addEventListener("resize", this.handleResize);
   }
 
   private handleResize = () => {
-    this.resizeCallback && this.resizeCallback();
+    const { offsetWidth: width, offsetHeight: height } = this.container;
 
-    const { width, height, aspect } = this.size;
+    const aspect = width / height;
     this.camera.aspect = aspect;
+
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
   };
 
-  setup(container: HTMLElement) {
-    container.appendChild(this.renderer.domElement);
+  setup() {
+    this.container.appendChild(this.renderer.domElement);
   }
 
-  setStats(container: HTMLElement) {
+  setStats() {
     this.stats = new Stats();
-    container.appendChild(this.stats.dom);
-  }
-
-  setResizeCallback(callback: () => void) {
-    this.resizeCallback = callback;
+    this.container.appendChild(this.stats.dom);
   }
 
   getMesh(name: string) {
@@ -60,8 +56,6 @@ class WebGL {
 
   requestAnimationFrame(callback: () => void) {
     this.renderer.setAnimationLoop(() => {
-      this.time.delta = this.clock.getDelta();
-      this.time.elapsed = this.clock.getElapsedTime();
       this.stats?.update();
       callback();
     });

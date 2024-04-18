@@ -5,17 +5,12 @@ import { loadAssets, type Assets } from "./utils";
 class TCanvas {
   gl: GL;
   private controls?: OC | null;
-  private container: HTMLElement;
   private assets: Assets = {};
 
   constructor(container: HTMLElement | null, controllable?: boolean) {
     if (!container) throw new Error("Canvas container cannot be null");
 
-    const { offsetWidth: width, offsetHeight: height } = container;
-
-    this.container = container;
-
-    const gl = new GL(width, height);
+    const gl = new GL(container);
     this.gl = gl;
 
     if (controllable) this.controls = new OC(gl);
@@ -36,8 +31,8 @@ class TCanvas {
       this.gl.scene.background = color;
     }
 
-    this.gl.setup(this.container);
-    this.gl.camera.position.z = 1.5;
+    this.gl.setup();
+    this.gl.camera.position.z = 20;
   }
 
   private anime = () => {
