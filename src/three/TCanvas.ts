@@ -1,4 +1,4 @@
-import * as THREE from "three";
+import { Color } from "three";
 import { GL, OC } from "./core";
 import { loadAssets, type Assets } from "./utils";
 
@@ -28,9 +28,9 @@ class TCanvas {
     });
   }
 
-  private init(bgColor?: string) {
+  private init(bgColor: string) {
     if (bgColor !== "rgba(0, 0, 0, 0)") {
-      const color = new THREE.Color(bgColor ? bgColor : "#012");
+      const color = new Color(bgColor);
       this.gl.scene.background = color;
     }
 

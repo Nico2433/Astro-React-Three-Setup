@@ -1,6 +1,6 @@
-import { type GL } from "@/three";
+import type { GL } from "@/three";
 import { useEffect, useState } from "react";
-import * as THREE from "three";
+import { BoxGeometry, Mesh, MeshBasicMaterial } from "three";
 import TCanvasContainer from "./ui/TCanvasContainer";
 
 interface Props
@@ -16,9 +16,9 @@ const CanvasWrapper: React.FC<Readonly<Props>> = ({ ...props }) => {
   const [gl, setGl] = useState<GL | null>(null);
   const getInstance = (gl: GL) => setGl(gl);
 
-  const geometry = new THREE.BoxGeometry(10, 10, 10);
-  const material = new THREE.MeshBasicMaterial({ color: "black" });
-  const cube = new THREE.Mesh(geometry, material);
+  const geometry = new BoxGeometry(10, 10, 10);
+  const material = new MeshBasicMaterial({ color: "black" });
+  const cube = new Mesh(geometry, material);
 
   useEffect(() => {
     if (!gl) return;

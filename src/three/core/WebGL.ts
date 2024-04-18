@@ -1,4 +1,5 @@
-import * as THREE from "three";
+import type * as THREE from "three";
+import { Clock, PerspectiveCamera, Scene, WebGLRenderer } from "three";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
 class WebGL {
@@ -7,7 +8,7 @@ class WebGL {
   camera: THREE.PerspectiveCamera;
   time = { delta: 0, elapsed: 0 };
 
-  private clock = new THREE.Clock();
+  private clock = new Clock();
   private resizeCallback?: () => void;
   private stats?: Stats;
   private size: { width: number; height: number; aspect: number };
@@ -16,13 +17,13 @@ class WebGL {
     const aspect = width / height;
     this.size = { width, height, aspect };
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    this.renderer = new WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(width, height);
     this.renderer.shadowMap.enabled = true;
 
-    this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(40, aspect, 0.01, 100);
+    this.scene = new Scene();
+    this.camera = new PerspectiveCamera(40, aspect, 0.01, 100);
 
     window.addEventListener("resize", this.handleResize);
   }
