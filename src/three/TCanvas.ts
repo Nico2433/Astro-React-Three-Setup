@@ -1,6 +1,6 @@
 import { Color, type ColorRepresentation } from "three";
 import { GL, OC } from "./core";
-import { loadAssets, type Asset } from "./utils";
+import { loadAssets } from "./utils";
 
 type AssetsType = {};
 
@@ -35,7 +35,7 @@ class TCanvas {
     this.gl.render();
   };
 
-  getAsset<T extends Asset>(assetName: keyof AssetsType) {
+  getAsset<T extends AssetsType>(assetName: keyof AssetsType) {
     const asset: T = this.assets[assetName];
     return asset;
   }
