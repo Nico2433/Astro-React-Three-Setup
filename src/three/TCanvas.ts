@@ -7,8 +7,8 @@ type AssetsType = {};
 class TCanvas {
   gl: GL;
   private controls?: OC | null;
-  private assets: AssetsType = {};
   private container: HTMLElement;
+  private assets: AssetsType = {};
 
   constructor(container: HTMLElement | null, controllable?: boolean) {
     if (!container) throw new Error("Canvas container cannot be null");
@@ -43,7 +43,7 @@ class TCanvas {
     this.gl.render();
   };
 
-  getAsset<T extends AssetsType>(assetName: keyof AssetsType) {
+  getAsset<T extends keyof AssetsType>(assetName: T) {
     const asset: T = this.assets[assetName];
     return asset;
   }

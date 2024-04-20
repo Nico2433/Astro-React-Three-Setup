@@ -3,16 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { BoxGeometry, Mesh, MeshBasicMaterial } from "three";
 import TCanvasContainer from "./TCanvasContainer";
 
-interface Props
-  extends Omit<
-    React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    >,
-    "ref"
-  > {}
-
-const CanvasWrapper: React.FC<Readonly<Props>> = ({ ...props }) => {
+const CanvasWrapper: React.FC = ({ ...props }) => {
   const initialRender = useRef<boolean>(true);
 
   const [canvas, setCanvas] = useState<TCanvas | null>(null);
@@ -23,12 +14,9 @@ const CanvasWrapper: React.FC<Readonly<Props>> = ({ ...props }) => {
   const cube = new Mesh(geometry, material);
 
   useEffect(() => {
-    if (!canvas) return;
-    if (!initialRender.current) return;
+    if (!canvas || !initialRender.current) return;
     const gl = canvas.gl;
-
     const scene = gl.scene;
-    scene.add(cube);
 
     gl.setStats();
 
@@ -37,6 +25,8 @@ const CanvasWrapper: React.FC<Readonly<Props>> = ({ ...props }) => {
       cube.rotation.y += 0.01;
       gl.render();
     });
+
+    scene.add(cube);
 
     initialRender.current = false;
   }, [canvas]);
